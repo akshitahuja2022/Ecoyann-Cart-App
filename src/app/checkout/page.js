@@ -1,7 +1,12 @@
-import React from "react";
+"use client";
 
-const checkOut = () => {
-  return <div>Welcome to Chekout Page</div>;
-};
+import AddressForm from "@/components/AddressForm";
 
-export default checkOut;
+export default function CheckoutPage() {
+  return (
+    <div className="p-10">
+      <h1 className="text-2xl font-bold mb-6">Shipping Address</h1>
+      <AddressForm />
+    </div>
+  );
+}
