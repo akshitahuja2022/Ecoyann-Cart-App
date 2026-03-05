@@ -54,6 +54,13 @@ export default function AddressForm() {
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
           />
 
+           <input
+            type="text"
+            placeholder="Address"
+            className="border border-gray-500 rounded-lg p-3"
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+          />
+
           {/* Grid for Pin + City */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
