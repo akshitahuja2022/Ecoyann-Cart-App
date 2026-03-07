@@ -1,11 +1,23 @@
-import { cartData } from "@/data/cartData";
-
 import CartItem from "@/components/CartItem";
 import OrderSummary from "@/components/OrderSummary";
 import Link from "next/link";
+import CartInitializer from "@/components/CartInitializer";
 
-export default function CartPage() {
-  const subtotal = cartData.cartItems.reduce(
+async function getCartData() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cart`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch cart data");
+  }
+
+  return res.json();
+}
+
+export default async function CartPage() {
+  const data = await getCartData();
+  const subtotal = data.cartItems.reduce(
     (acc, item) => acc + item.product_price * item.quantity,
     0,
   );
@@ -16,14 +28,16 @@ export default function CartPage() {
         Welcome to Ecommerce-Cart-App
       </h1>
 
+      <CartInitializer items={data.cartItems} />
+
       <div className="flex gap-12 justify-center">
-        {cartData.cartItems.map((item) => (
+        {data.cartItems.map((item) => (
           <CartItem key={item.product_id} item={item} />
         ))}
       </div>
 
       <div className="w-3/4 m-auto">
-        <OrderSummary subtotal={subtotal} shipping={cartData.shipping_fee} />
+        <OrderSummary subtotal={subtotal} shipping={data.shipping_fee} />
       </div>
 
       <div className="flex justify-center">
