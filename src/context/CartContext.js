@@ -4,20 +4,33 @@ import { createContext, useState } from "react";
 
 export const CartContext = createContext();
 
-export function CardProvider({ children }) {
+export const CartProvider = ({ children }) => {
+  const [cartItems, setCartItems] = useState([]);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    pinCode: "",
+    address: "",
+    pin: "",
     city: "",
     state: "",
-    address: "",
   });
 
+  const [address, setAddress] = useState(null);
+
   return (
-    <CartContext.Provider value={{ form, setForm }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        setCartItems,
+        form,
+        setForm,
+        address,
+        setAddress,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
-}
+};
