@@ -1,4 +1,8 @@
+"use client";
+import { useRouter } from "next/navigation";
+
 export default function SuccessPage() {
+  const router = useRouter();
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
       <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6 sm:p-8 text-center">
@@ -10,7 +14,10 @@ export default function SuccessPage() {
           Thank you for your purchase.
         </p>
 
-        <button className="mt-6 w-full sm:w-auto bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+        <button
+          onClick={() => router.push("/")}
+          className="mt-6 w-full sm:w-auto bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer"
+        >
           Continue Shopping
         </button>
       </div>
