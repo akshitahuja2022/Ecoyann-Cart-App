@@ -1,4 +1,6 @@
-import { CardProvider } from "@/context/CartContext";
+import { CartProvider } from "@/context/CartContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 export const metadata = {
@@ -10,8 +12,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-      
-        <CardProvider>{children}</CardProvider>
+        <CartProvider>
+          {children}
+          <ToastContainer position="top-center" autoClose={2000} />
+        </CartProvider>
       </body>
     </html>
   );
