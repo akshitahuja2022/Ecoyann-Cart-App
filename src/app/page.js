@@ -5,10 +5,10 @@ import CartInitializer from "@/components/CartInitializer";
 import { headers } from "next/headers";
 
 async function getCartData() {
-  const headerList = headers();
+  const headerList = await headers();
   const host = headerList.get("host");
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  
+
   const res = await fetch(`${protocol}://${host}/api/cart`, {
     cache: "no-store",
   });
