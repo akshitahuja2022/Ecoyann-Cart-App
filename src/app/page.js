@@ -4,7 +4,7 @@ import Link from "next/link";
 import CartInitializer from "@/components/CartInitializer";
 
 async function getCartData() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cart`, {
+  const res = await fetch(`/api/cart`, {
     cache: "no-store",
   });
 
