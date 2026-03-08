@@ -9,7 +9,7 @@ The application guides users from reviewing their **cart**, entering **shipping 
 
 # Live Demo
 
-Deployed Link: https://your-deployed-link.com
+Deployed Link: https://ecoyann-cart-app.vercel.app
 
 Repository: https://github.com/yourusername/ecoyaan-checkout
 
