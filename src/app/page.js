@@ -2,12 +2,16 @@ import CartItem from "@/components/CartItem";
 import OrderSummary from "@/components/OrderSummary";
 import Link from "next/link";
 import CartInitializer from "@/components/CartInitializer";
+import { headers } from "next/headers";
 
 async function getCartData() {
-  const res = await fetch(`/api/cart`, {
+  const headerList = headers();
+  const host = headerList.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  
+  const res = await fetch(`${protocol}://${host}/api/cart`, {
     cache: "no-store",
   });
-
   if (!res.ok) {
     throw new Error("Failed to fetch cart data");
   }
