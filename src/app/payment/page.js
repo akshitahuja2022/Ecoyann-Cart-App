@@ -18,6 +18,11 @@ export default function PaymentPage() {
   const shipping = 50;
 
   const handlePayment = () => {
+    if (!form.address) {
+      toast.error("Address Field Required");
+      return;
+    }
+
     toast.success("Payment Successful!");
     setTimeout(() => {
       router.push("/success");
