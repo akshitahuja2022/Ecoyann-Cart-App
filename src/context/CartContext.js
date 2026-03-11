@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
 
@@ -18,6 +18,19 @@ export const CartProvider = ({ children }) => {
   });
 
   const [address, setAddress] = useState(null);
+
+  useEffect(() => {
+    const savedAddress = localStorage.getItem("userAddress");
+    if (savedAddress) {
+      setAddress(JSON.parse(savedAddress));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (address) {
+      localStorage.setItem("userAddress", JSON.stringify(address));
+    }
+  }, [address]);
 
   return (
     <CartContext.Provider
