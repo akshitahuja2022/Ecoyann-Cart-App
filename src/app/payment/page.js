@@ -1,14 +1,19 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import OrderSummary from "@/components/OrderSummary";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function PaymentPage() {
   const { address, form, setForm, cartItems } = useContext(CartContext);
   const router = useRouter();
+
+  useEffect(() => {
+    const address = JSON.parse(localStorage.getItem("userAddress"));
+  }, []);
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.product_price * item.quantity,
@@ -24,53 +29,76 @@ export default function PaymentPage() {
     }
 
     toast.success("Payment Successful!");
+
     setTimeout(() => {
       router.push("/success");
     }, 1500);
   };
 
   return (
-    <>
-      <div className="w-full max-w-lg mx-auto border border-gray-300 rounded-lg p-4 sm:p-6 mt-6 bg-white shadow-sm">
-        <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center sm:text-left">
-          Confirm Your Order
-        </h1>
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* MAIN CONTENT */}
+      <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-16 grid md:grid-cols-2 gap-8">
+        {/* SHIPPING DETAILS */}
+        <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-lg">
+          <h1 className="text-2xl font-semibold mb-6">Confirm Your Order</h1>
 
-        <div className="border border-gray-300 rounded-lg p-4 sm:p-5 mb-6 shadow-sm">
-          <h2 className="font-semibold text-base sm:text-lg mb-3">
-            Shipping Address
-          </h2>
+          <div className="bg-white rounded-2xl text-black p-5 mb-6">
+            <h2 className="font-semibold text-lg mb-4">Shipping Address</h2>
 
-          <div className="text-sm sm:text-base text-gray-700 space-y-1">
-            <p>{address?.name}</p>
-            <p>{address?.email}</p>
-            <p>{address?.phone}</p>
-            <p className="mb-2">
-              {address?.city}, {address?.state} - {address?.pin}
-            </p>
-            <label className="font-semibold text-lg" htmlFor="address">
-              Address
+            <div className="text-sm text-black space-y-1 mb-4">
+              <p>{address?.name}</p>
+              <p>{address?.email}</p>
+              <p>{address?.phone}</p>
+              <p>
+                {address?.city}, {address?.state} - {address?.pin}
+              </p>
+            </div>
+
+            <label className="text-sm text-black mb-2 block">
+              Full Address
             </label>
+
             <input
               type="text"
-              placeholder="Enter the shipping address..."
-              className="border mb-2 border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
+              placeholder="Enter complete delivery address..."
+              className="bg-slate-700 border border-gray-600 rounded-lg p-3 w-full text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
           </div>
         </div>
 
-        <OrderSummary subtotal={subtotal} shipping={shipping} />
+        {/* ORDER SUMMARY */}
+        <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-lg h-fit">
+          <div className="bg-slate-900 rounded-4xl shadow-lg p-8">
+            <h3 className="text-xl font-semibold text-white mb-8">
+              Order Summary
+            </h3>
 
-        <div className="flex justify-center">
+            <OrderSummary subtotal={subtotal} shipping={shipping} />
+          </div>
+        </div>
+      </div>
+
+      {/* STICKY PAYMENT BAR */}
+      <div className="sticky bottom-0 bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4 justify-end items-center">
+          {/* Back */}
+          <Link href="/">
+            <button className="px-6 py-3 rounded-xl text-white border border-gray-300 bg-emerald-600 hover:bg-slate-900 hover:text-white hover:font-bold cursor-pointer transition">
+              ← Back
+            </button>
+          </Link>
+
+          {/* Pay Button */}
           <button
             onClick={handlePayment}
-            className="bg-green-600 text-white text-lg font-semibold px-4 py-2 mt-8 rounded-md cursor-pointer"
+            className="px-8 py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-emerald-600 transition cursor-pointer"
           >
-            Pay Securely
+            Pay Securely →
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

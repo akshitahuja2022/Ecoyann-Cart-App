@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Link from "next/link";
+
 export default function AddressForm() {
   const { form, setForm, setAddress } = useContext(CartContext);
   const router = useRouter();
@@ -36,73 +38,101 @@ export default function AddressForm() {
     }
 
     setAddress(form);
+    localStorage.setItem('userAddress',JSON.stringify(form));
     router.push("/payment");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-6 bg-gray-50">
-      <div className="w-full max-w-md sm:max-w-lg bg-white p-6 sm:p-8 rounded-xl shadow-md border border-gray-300">
-        <h2 className="text-xl sm:text-2xl font-semibold text-center mb-6 sm:mb-8">
-          Enter Your Shipping Details
-        </h2>
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* FORM SECTION */}
+      <div className="flex-1 flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-lg bg-slate-900 text-white p-8 rounded-2xl shadow-lg">
+          {/* Title */}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-semibold">
+              Shipping Address
+            </h2>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4"
-          autoCorrect="off"
-        >
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="border border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
-            className="border border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-
-          <input
-            type="tel"
-            placeholder="Phone"
-            className="border border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          />
-
-          {/* Pin + City */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="PIN Code"
-              className="border border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
-              onChange={(e) => setForm({ ...form, pin: e.target.value })}
-            />
-
-            <input
-              type="text"
-              placeholder="City"
-              className="border border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
-              onChange={(e) => setForm({ ...form, city: e.target.value })}
-            />
+            <p className="text-gray-400 mt-2 text-sm">
+              Enter your delivery details for secure checkout
+            </p>
           </div>
 
-          <input
-            type="text"
-            placeholder="State"
-            className="border border-gray-400 rounded-lg p-3 text-sm sm:text-base w-full"
-            onChange={(e) => setForm({ ...form, state: e.target.value })}
-          />
-
-          <button
-            type="submit"
-            className="bg-green-600 hover:bg-green-700 transition text-white cursor-pointer font-medium py-3 rounded-lg text-sm sm:text-base mt-2 w-full"
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-6"
+            autoCorrect="off"
           >
-            Continue
+            {/* Full Name */}
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+
+            {/* Email */}
+            <input
+              type="email"
+              placeholder="Email Address"
+              className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
+
+            {/* Phone */}
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+
+            {/* PIN + CITY */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="PIN Code"
+                className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+                onChange={(e) => setForm({ ...form, pin: e.target.value })}
+              />
+
+              <input
+                type="text"
+                placeholder="City"
+                className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+                onChange={(e) => setForm({ ...form, city: e.target.value })}
+              />
+            </div>
+
+            {/* State */}
+            <input
+              type="text"
+              placeholder="State"
+              className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+              onChange={(e) => setForm({ ...form, state: e.target.value })}
+            />
+          </form>
+        </div>
+      </div>
+
+      {/* STICKY ACTION BAR */}
+      <div className="sticky bottom-0 bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4 justify-end items-center">
+          {/* Back Button */}
+          <Link href="/">
+            <button className="px-6 py-3 rounded-xl text-white border border-gray-300 bg-emerald-600 hover:bg-slate-900 hover:text-white hover:font-bold cursor-pointer transition">
+              ← Back
+            </button>
+          </Link>
+
+          {/* Next Step */}
+          <button
+            onClick={handleSubmit}
+            className="px-8 py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-emerald-600 transition cursor-pointer"
+          >
+            Next Step →
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

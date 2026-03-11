@@ -2,7 +2,7 @@ export default function OrderSummary({ subtotal, shipping }) {
   const total = subtotal + shipping;
 
   return (
-    <div className="w-full max-w-lg mx-auto border border-gray-300 rounded-xl p-4 sm:p-6 mt-6 bg-white shadow-sm">
+    <div className="w-full max-w-lg mx-auto border border-gray-300 rounded-xl p-4 sm:p-6 mt-6 bg-white text-black shadow-sm">
       <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center">
         Order Summary
       </h2>
