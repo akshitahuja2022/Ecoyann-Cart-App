@@ -1,14 +1,14 @@
 export default function CartItem({ item }) {
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 border border-gray-300 rounded-xl p-4 mb-4 bg-white shadow-sm">
+    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 bg-white border border-gray-300 rounded-xl p-4 mb-4 shadow-md">
       <img
         src={item.image}
         alt={item.product_name}
-        className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-md object-cover"
+        className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-md object-center"
       />
 
       <div className="flex flex-col text-center sm:text-left">
-        <h2 className="font-bold text-base sm:text-lg md:text-xl">
+        <h2 className="font-bold text-md">
           {item.product_name}
         </h2>
 
