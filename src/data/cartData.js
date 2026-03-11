@@ -5,7 +5,7 @@ export const cartData = {
       product_name: "Bamboo Toothbrush (Pack of 4)",
       product_price: 299,
       quantity: 2,
-      image: "/BambooToothBrush.png",
+      image: "/toothBrush.png",
     },
     {
       product_id: 102,
