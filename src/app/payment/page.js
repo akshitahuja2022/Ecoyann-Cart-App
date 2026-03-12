@@ -122,14 +122,14 @@ export default function PaymentPage() {
       <div className="sticky bottom-0 h-20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4 justify-end items-center">
           <Link href="/">
-            <button className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition">
+            <button className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition cursor-pointer">
               ← Back
             </button>
           </Link>
 
           <button
             onClick={handlePayment}
-            className="px-8 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition"
+            className="px-8 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition cursor-pointer"
           >
             Pay Securely →
           </button>
