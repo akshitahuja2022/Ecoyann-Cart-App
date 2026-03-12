@@ -17,20 +17,35 @@ export const CartProvider = ({ children }) => {
     state: "",
   });
 
-  const [address, setAddress] = useState(null);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
 
   useEffect(() => {
-    const savedAddress = localStorage.getItem("userAddress");
-    if (savedAddress) {
-      setAddress(JSON.parse(savedAddress));
+    const saved = localStorage.getItem("userAddresses");
+
+    if (saved) {
+      const parsed = JSON.parse(saved);
+
+      if (Array.isArray(parsed)) {
+        setAddresses(parsed);
+      } else {
+        setAddresses([parsed]);
+      }
     }
   }, []);
-
   useEffect(() => {
-    if (address) {
-      localStorage.setItem("userAddress", JSON.stringify(address));
-    }
-  }, [address]);
+    localStorage.setItem("userAddresses", JSON.stringify(addresses));
+  }, [addresses]);
+
+  const addAddress = () => {
+    if (!form.address) return;
+
+    setAddresses((prev) => {
+      const safePrev = Array.isArray(prev) ? prev : [];
+      return [...safePrev, { ...form }];
+    });
+    setSelectedAddress(form);
+  };
 
   return (
     <CartContext.Provider
@@ -39,8 +54,11 @@ export const CartProvider = ({ children }) => {
         setCartItems,
         form,
         setForm,
-        address,
-        setAddress,
+        addresses,
+        addAddress,
+        setAddresses,
+        selectedAddress,
+        setSelectedAddress,
       }}
     >
       {children}

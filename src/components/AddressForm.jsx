@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 
 export default function AddressForm() {
-  const { form, setForm, setAddress } = useContext(CartContext);
+  const { form, setForm, setAddresses } = useContext(CartContext);
   const router = useRouter();
 
   const handleSubmit = (e) => {
@@ -37,8 +37,8 @@ export default function AddressForm() {
       return;
     }
 
-    setAddress(form);
-    localStorage.setItem('userAddress',JSON.stringify(form));
+    setAddresses(form);
+    localStorage.setItem("userAddress", JSON.stringify(form));
     router.push("/payment");
   };
 

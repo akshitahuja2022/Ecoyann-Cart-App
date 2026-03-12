@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import OrderSummary from "@/components/OrderSummary";
@@ -8,12 +8,17 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 
 export default function PaymentPage() {
-  const { address, form, setForm, cartItems } = useContext(CartContext);
-  const router = useRouter();
+  const {
+    addresses,
+    addAddress,
+    form,
+    setForm,
+    cartItems,
+    selectedAddress,
+    setSelectedAddress,
+  } = useContext(CartContext);
 
-  useEffect(() => {
-    const address = JSON.parse(localStorage.getItem("userAddress"));
-  }, []);
+  const router = useRouter();
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.product_price * item.quantity,
@@ -23,8 +28,8 @@ export default function PaymentPage() {
   const shipping = 50;
 
   const handlePayment = () => {
-    if (!form.address) {
-      toast.error("Address Field Required");
+    if (!selectedAddress) {
+      toast.error("Please select or add an address");
       return;
     }
 
@@ -36,64 +41,95 @@ export default function PaymentPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* MAIN CONTENT */}
-      <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-16 grid md:grid-cols-2 gap-8">
-        {/* SHIPPING DETAILS */}
-        <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-lg">
-          <h1 className="text-2xl font-semibold mb-6">Confirm Your Order</h1>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* MAIN SECTION */}
+      <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-16 grid md:grid-cols-2 gap-10">
+        {/* ADDRESS SECTION */}
+        <div className="bg-slate-900 rounded-2xl p-8 shadow-md border">
+          <h1 className="text-2xl font-bold mb-6 text-white">
+            Shipping Address
+          </h1>
 
-          <div className="bg-white rounded-2xl text-black p-5 mb-6">
-            <h2 className="font-semibold text-lg mb-4">Shipping Address</h2>
+          {/* SAVED ADDRESSES */}
+          {addresses?.length ? (
+            <div className="space-y-4">
+              {addresses.map((addr, index) => (
+                <div
+                  key={index}
+                  onClick={() => setSelectedAddress(addr)}
+                  className={`p-4 rounded-xl border cursor-pointer transition
+  ${
+    selectedAddress?.address === addr.address
+      ? "border-emerald-500 bg-white text-black"
+      : "border-gray-600 bg-slate-900 text-white hover:border-emerald-400"
+  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="radio"
+                      checked={selectedAddress?.address === addr.address}
+                      readOnly
+                      className="mt-1 accent-emerald-600"
+                    />
 
-            <div className="text-sm text-black space-y-1 mb-4">
-              <p>{address?.name}</p>
-              <p>{address?.email}</p>
-              <p>{address?.phone}</p>
-              <p>
-                {address?.city}, {address?.state} - {address?.pin}
-              </p>
+                    <div>
+                      <p className="font-semibold">{addr.name}</p>
+
+                      <p className="text-sm">{addr.phone}</p>
+
+                      <p className="text-sm mt-1">{addr.address}</p>
+
+                      <p className="text-sm">
+                        {addr.city}, {addr.state} - {addr.pin}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <label className="text-sm text-black mb-2 block">
-              Full Address
-            </label>
+          ) : (
+            <p className="text-gray-500 text-sm">No saved addresses yet.</p>
+          )}
+          {/* ADD ADDRESS */}
+          <div className="mt-8 border-t pt-6 bg-white p-4 rounded-2xl">
+            <h3 className="font-semibold text-black mb-3">Add New Address</h3>
 
             <input
-              type="text"
-              placeholder="Enter complete delivery address..."
-              className="bg-slate-700 border border-gray-600 rounded-lg p-3 w-full text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+              placeholder="Enter full address..."
+              className="border border-gray-300 p-3 w-full rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
+
+            <button
+              onClick={addAddress}
+              className="bg-emerald-600 text-white px-5 py-2 rounded-lg hover:bg-emerald-700 transition"
+            >
+              Add Address
+            </button>
           </div>
         </div>
 
         {/* ORDER SUMMARY */}
-        <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-lg h-fit">
-          <div className="bg-slate-900 rounded-4xl shadow-lg p-8">
-            <h3 className="text-xl font-semibold text-white mb-8">
-              Order Summary
-            </h3>
+        <div className="bg-slate-900 rounded-2xl p-8 shadow-md border h-fit">
+          <h3 className="text-xl font-bold text-white mb-6">Order Summary</h3>
 
-            <OrderSummary subtotal={subtotal} shipping={shipping} />
-          </div>
+          <OrderSummary subtotal={subtotal} shipping={shipping} />
         </div>
       </div>
 
-      {/* STICKY PAYMENT BAR */}
-      <div className="sticky bottom-0 bg-white">
+      {/* STICKY BAR */}
+      <div className="sticky bottom-0 h-20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4 justify-end items-center">
-          {/* Back */}
           <Link href="/">
-            <button className="px-6 py-3 rounded-xl text-white border border-gray-300 bg-emerald-600 hover:bg-slate-900 hover:text-white hover:font-bold cursor-pointer transition">
+            <button className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition">
               ← Back
             </button>
           </Link>
 
-          {/* Pay Button */}
           <button
             onClick={handlePayment}
-            className="px-8 py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-emerald-600 transition cursor-pointer"
+            className="px-8 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition"
           >
             Pay Securely →
           </button>
