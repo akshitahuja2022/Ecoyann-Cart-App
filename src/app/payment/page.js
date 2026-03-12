@@ -103,7 +103,7 @@ export default function PaymentPage() {
 
             <button
               onClick={addAddress}
-              className="bg-emerald-600 text-white px-5 py-2 rounded-lg hover:bg-emerald-700 transition"
+              className="bg-emerald-600 text-white px-5 py-2 rounded-lg hover:bg-emerald-700 transition cursor-pointer"
             >
               Add Address
             </button>
