@@ -45,6 +45,10 @@ export const CartProvider = ({ children }) => {
       return [...safePrev, { ...form }];
     });
     setSelectedAddress(form);
+    setForm((prev) => ({
+      ...prev,
+      address: "",
+    }));
   };
 
   return (

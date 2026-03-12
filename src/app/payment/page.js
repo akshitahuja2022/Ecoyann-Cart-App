@@ -14,6 +14,7 @@ export default function PaymentPage() {
     form,
     setForm,
     cartItems,
+    setAddresses,
     selectedAddress,
     setSelectedAddress,
   } = useContext(CartContext);
@@ -58,11 +59,11 @@ export default function PaymentPage() {
                   key={index}
                   onClick={() => setSelectedAddress(addr)}
                   className={`p-4 rounded-xl border cursor-pointer transition
-  ${
-    selectedAddress?.address === addr.address
-      ? "border-emerald-500 bg-white text-black"
-      : "border-gray-600 bg-slate-900 text-white hover:border-emerald-400"
-  }`}
+                 ${
+                   selectedAddress?.address === addr.address
+                     ? "border-emerald-500 bg-white text-black"
+                     : "border-gray-600 bg-slate-900 text-white hover:border-emerald-400"
+                 }`}
                 >
                   <div className="flex items-start gap-3">
                     <input
@@ -121,7 +122,7 @@ export default function PaymentPage() {
       {/* STICKY BAR */}
       <div className="sticky bottom-0 h-20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4 justify-end items-center">
-          <Link href="/">
+          <Link href="/checkout">
             <button className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition cursor-pointer">
               ← Back
             </button>

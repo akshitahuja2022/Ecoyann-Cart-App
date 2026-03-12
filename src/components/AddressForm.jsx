@@ -37,7 +37,25 @@ export default function AddressForm() {
       return;
     }
 
-    setAddresses(form);
+    setAddresses((prev) => {
+      if (!form.address) return prev;
+
+      const exists = prev?.some(
+        (addr) =>
+          addr.name === form.name &&
+          addr.phone === form.phone &&
+          addr.pin === form.pin &&
+          addr.city === form.city &&
+          addr.state === form.state &&
+          addr.address === form.address,
+      );
+
+      if (exists) return prev;
+
+      const updated = [...(prev || []), form];
+      localStorage.setItem("userAddresses", JSON.stringify(updated));
+      return updated;
+    });
     localStorage.setItem("userAddress", JSON.stringify(form));
     router.push("/payment");
   };
@@ -66,6 +84,7 @@ export default function AddressForm() {
             {/* Full Name */}
             <input
               type="text"
+              value={form.name}
               placeholder="Full Name"
               className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -74,6 +93,7 @@ export default function AddressForm() {
             {/* Email */}
             <input
               type="email"
+              value={form.email}
               placeholder="Email Address"
               className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -82,6 +102,7 @@ export default function AddressForm() {
             {/* Phone */}
             <input
               type="tel"
+              value={form.phone}
               placeholder="Phone Number"
               className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -91,6 +112,7 @@ export default function AddressForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 type="text"
+                value={form.pin}
                 placeholder="PIN Code"
                 className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
                 onChange={(e) => setForm({ ...form, pin: e.target.value })}
@@ -98,6 +120,7 @@ export default function AddressForm() {
 
               <input
                 type="text"
+                value={form.city}
                 placeholder="City"
                 className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
@@ -108,6 +131,7 @@ export default function AddressForm() {
             <input
               type="text"
               placeholder="State"
+              value={form.state}
               className="bg-slate-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
               onChange={(e) => setForm({ ...form, state: e.target.value })}
             />
